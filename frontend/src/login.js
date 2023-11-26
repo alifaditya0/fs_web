@@ -40,7 +40,10 @@ const Login = () => {
   };
 
   const [formData, setFormData] = useState({
+    nama: '',
+    alamat: '',
     email: '',
+    no_hp: '',
     password: '',
   });
 
@@ -48,12 +51,21 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   const [fieldErrors, setFieldErrors] = useState({
+    nama: '',
+    alamat: '',
     email: '',
+    no_hp: '',
     password: '',
   });
 
   const clearFieldErrors = () => {
-    setFieldErrors({ email: '', password: '' });
+    setFieldErrors({
+      nama: '',
+      alamat: '',
+      email: '',
+      no_hp: '',
+      password: '',
+    });
   };
 
   const handleChange = (e) => {
@@ -68,8 +80,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.password) {
+    if (!formData.nama || !formData.alamat || !formData.email || !formData.no_hp || !formData.password) {
+      setFieldError('nama', 'Please enter your name.');
+      setFieldError('alamat', 'Please enter your address.');
       setFieldError('email', 'Please enter your email.');
+      setFieldError('no_hp', 'Please enter your phone number.');
       setFieldError('password', 'Please enter your password.');
       return;
     }
@@ -78,23 +93,12 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/customer/login', formData);
-
-      if (response.status === 200) {
-        console.log('Login successful:', response.data.token);
-        localStorage.setItem('token', response.data.token);
-        // Handle login success, e.g., redirect or display success message
-      } else {
-        setError(response.data.error || 'Error logging in');
-        console.error('Error logging in:', response.data.error);
-      }
+      const response = await axios.post('http://localhost:3001/api/customer/store', formData);
+      console.log(response.data);
+      // Handle success, e.g., redirect or display success message
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setError('Invalid email or password');
-      } else {
-        setError(`Error logging in: ${error.message}`);
-        console.error('Error logging in', error);
-      }
+      console.error('Error logging in', error);
+      // Handle error, e.g., display error message
     } finally {
       setLoading(false);
     }
@@ -104,16 +108,41 @@ const Login = () => {
     <div style={backgroundStyle}>
       <div style={formStyle}>
         <h2 style={{ textAlign: 'center' }}>Login</h2>
-        {fieldErrors.email && <p style={{ color: 'red' }}>{fieldErrors.email}</p>}
-        {fieldErrors.password && <p style={{ color: 'red' }}>{fieldErrors.password}</p>}
+        {Object.keys(fieldErrors).map((key) => (
+          fieldErrors[key] && <p key={key} style={{ color: 'red' }}>{fieldErrors[key]}</p>
+        ))}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form>
+          <input
+            style={inputStyle}
+            type="text"
+            name="nama"
+            placeholder="Nama"
+            value={formData.nama}
+            onChange={handleChange}
+          />
+          <input
+            style={inputStyle}
+            type="text"
+            name="alamat"
+            placeholder="Alamat"
+            value={formData.alamat}
+            onChange={handleChange}
+          />
           <input
             style={inputStyle}
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
+            onChange={handleChange}
+          />
+          <input
+            style={inputStyle}
+            type="text"
+            name="no_hp"
+            placeholder="Nomer Telepon"
+            value={formData.no_hp}
             onChange={handleChange}
           />
           <input
