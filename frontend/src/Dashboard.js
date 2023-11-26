@@ -61,7 +61,7 @@ const Dashboard = () => {
     alignItems: 'center',
     padding: '20px',
     marginBottom: '20px',
-    color: 'white',
+    color: 'red',
   };
 
   const cardContainerStyle = {
@@ -73,7 +73,7 @@ const Dashboard = () => {
   };
 
   const cardStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'red',
     width: '300px',
     border: '1px solid #ddd',
     borderRadius: '10px',
@@ -115,6 +115,15 @@ const Dashboard = () => {
     flexDirection: 'column',
     justifyContent: 'center',
   };
+   const buttonStyle = {
+    padding: '10px',
+    boxSizing: 'border-box',
+    backgroundColor: '#E50914',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
 
   const handleCardHover = (index) => {
     // Add any hover effects here
@@ -126,14 +135,14 @@ const Dashboard = () => {
         <h2 style={{ fontFamily: 'Teko, sans-serif', fontSize: '4rem' }}>
           Selamat Datang di Dashboard, {username}
         </h2>
-        <button onClick={handleLogout} style={{ padding: '10px', cursor: 'pointer' }}>
+        <button onClick={handleLogout} style={buttonStyle}>
           Logout
         </button>
       </div>
 
       <div style={cardContainerStyle}>
         {films.map((film, idx) => (
-          <Link key={idx} to={`/pesan/${film.id_film}`} style={{ textDecoration: 'none' }}>
+          <Link key={idx} to={`/pesan/${film.id_film}`} style={{ textDecoration: 'none', color:'black' }}>
             <div
               style={cardStyle}
               onMouseEnter={() => handleCardHover(idx)}
